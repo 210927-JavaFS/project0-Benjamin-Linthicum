@@ -8,14 +8,14 @@ public class Customer {
     private String last_name;
     private String user_name;
     private String password; // encrypted
-    private ArrayList<Account> accounts; //TODO make hashmap, hash on account name, enforce uniqueness
+    private HashMap<String, Account> accounts; // key is the name of the account
 
     public Customer(String first_name, String last_name, String user_name, String password){
         this.first_name = first_name;
         this.last_name = last_name;
         this.user_name = user_name;
         this.password = encryptPassword(password);
-        this.accounts = new ArrayList<Account>();
+        this.accounts = new HashMap<String, Account>();
     }
 
     private String encryptPassword(String password){
@@ -38,12 +38,16 @@ public class Customer {
         return password;
     }
 
-    public void applyForAccount(String type, String name, double balance){
-        accounts.add(new Account(type, name, balance));
+    public boolean applyForAccount(String type, String name){
+        if(accounts.containsKey(name)){
+            return false;
+        }
+        accounts.put(name, new Account(type, name));
+        return true;
     }
 
     public Account getAccount(String name){
-        return null; //TODO implement
+        return accounts.get(name); // returns null if key is not found
     }
 
 }

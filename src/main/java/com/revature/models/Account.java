@@ -6,10 +6,10 @@ public class Account {
     private double balance;
     private boolean isApproved;
 
-    public Account (String type, String name, double balance){
+    public Account (String type, String name){
         this.type = type;
         this.name = name;
-        this.balance = balance;
+        this.balance = 0;
         this.isApproved = false;
     }
 
