@@ -24,4 +24,8 @@ public class UserService {
         return "";
     }
 
+    public User findByUserName(String username){
+        return userDao.findByUserName(username);
+    }
+
 }

@@ -2,6 +2,7 @@ package com.revature.controllers;
 
 import com.revature.services.UserService;
 import com.revature.models.*;
+import java.util.Objects;
 
 public class UserController {
 
@@ -12,7 +13,7 @@ public class UserController {
     }
 
     public boolean isUsernameAvailable(String username){
-        return true;
+        return Objects.isNull(userService.findByUserName(username));
     }
 
     public User createNewUser(String username, String password, String firstName, String lastName){
