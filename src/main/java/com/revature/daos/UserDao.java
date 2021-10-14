@@ -8,4 +8,5 @@ public interface UserDao {
     public User findByUserName(String username);
     public boolean insertNewUser(User user);
     public ArrayList<Account> findAccountsByUser(String username);
+    public boolean addAccount(String name, String type, User user);
 }

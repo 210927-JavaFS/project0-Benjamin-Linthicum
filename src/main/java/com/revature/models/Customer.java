@@ -11,9 +11,9 @@ public class Customer extends User{
         this.accounts = new ArrayList<Account>();
     }
 
-    public boolean applyForAccount(String type, String name){
+    @Override
+    public void applyForAccount(String type, String name){
         accounts.add(new Account(type, name));
-        return true;
     }
 
     @Override

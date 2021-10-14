@@ -12,7 +12,7 @@ public class UserService {
     public User login(String username, String password){
         User user = findByUserName(username);
         if(Objects.isNull(user)){
-            System.out.println("No such user found. Please check you entered the username correctly.");
+            System.out.println("No such user found. Please check that you entered the username correctly.");
             return null;
         }
         else if(!encryptPassword(password).equals(user.getEncryptedPassword())){
@@ -50,6 +50,10 @@ public class UserService {
         for(Account a: accounts){
             System.out.println(a);
         }
+    }
+
+    public boolean applyForAccount(String accountName, String type, User user){
+        return userDao.addAccount(accountName, type, user);
     }
 
 }

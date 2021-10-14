@@ -55,6 +55,42 @@ public class MenuController {
             badResponse = false;
             switch (response) {
                 case "apply":
+                    System.out.println("What would you like to name your account?");
+                    String name = "";
+                    while(true){
+                        name = scan.nextLine();
+                        for(Account a: currentUser.getAccounts()){
+                            if(name.equals(a.getName())){
+                                System.out.println("Account with this name already exists. Please enter a different name.");
+                                continue;
+                            }
+                        }
+                        break;
+                    }
+                    System.out.println("What type of account will it be? Either \"checkings\", \"savings\", or \"spend\".");
+                    String accountType = "";
+                    int attempts = 0;
+                    while(true){
+                        accountType = scan.nextLine();
+                        if(accountType.equals("I made you")){
+                            System.out.println("I see no god here but me.");
+                            continue;
+                        }
+                        if(accountType.equals("checkings") || accountType.equals("savings") || accountType.equals("spend")){
+                            break;
+                        }
+                        System.out.println("Mispelled response. Please try again.");
+                        if(attempts >= 2){
+                            System.out.println("If you continue to have trouble, please reference a dictionary or your local second grade English teacher.");
+                        }
+                        attempts++;
+                    }
+                    if(userController.applyForAccount(name, accountType, currentUser)){
+                        System.out.println("Account application successfully submitted.");
+                    }
+                    else{
+                        System.out.println("An unexpected error occured. Account creation failed.");
+                    }
                     break;
                 case "list":
                     userController.listAccounts(currentUser);

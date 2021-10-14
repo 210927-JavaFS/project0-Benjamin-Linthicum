@@ -24,4 +24,8 @@ public class UserController {
         userService.listAccounts(user);
     }
 
+    public boolean applyForAccount(String accountName, String type, User user){
+        return userService.applyForAccount(accountName, type, user);
+    }
+
 }

@@ -18,6 +18,10 @@ public abstract class User {
     public void addAccount(Account a){
         return;
     }
+    
+    public void applyForAccount(String name, String type){
+        return;
+    }
 
     public ArrayList<Account> getAccounts(){
         return null;

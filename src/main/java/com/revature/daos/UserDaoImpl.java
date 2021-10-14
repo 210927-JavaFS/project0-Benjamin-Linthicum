@@ -101,4 +101,29 @@ public class UserDaoImpl implements UserDao{
         return null;
     }
 
+    @Override
+    public boolean addAccount(String name, String type, User user){
+        try(Connection conn = ConnectionUtil.getConnection()){
+            String sql = "INSERT INTO account VALUES (account_name, user_name, account_type, balance, isApproved) " +
+                         "VALUES (?,?,?,?,?)";
+            PreparedStatement statement = conn.prepareStatement(sql);
+            int count = 0;
+
+            statement.setString(++count, name);
+            statement.setString(++count, user.getUserName());
+            statement.setString(++count, type);
+            statement.setDouble(++count, 0.0);
+            statement.setBoolean(++count, false);
+            statement.execute();
+
+            user.applyForAccount(name, type);
+
+            return true;
+        }
+        catch(SQLException e){
+            e.printStackTrace();
+        }
+        return false;
+    }
+
 }
