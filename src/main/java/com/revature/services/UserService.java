@@ -56,4 +56,8 @@ public class UserService {
         return userDao.addAccount(accountName, type, user);
     }
 
+    public boolean deposit(String username, String accountName, double amount){
+        return userDao.deposit(username, accountName, amount);
+    }
+
 }

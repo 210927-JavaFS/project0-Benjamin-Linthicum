@@ -28,4 +28,8 @@ public class UserController {
         return userService.applyForAccount(accountName, type, user);
     }
 
+    public boolean deposit(String username, String accountName, double amount){
+        return userService.deposit(username, accountName, amount);
+    }
+
 }

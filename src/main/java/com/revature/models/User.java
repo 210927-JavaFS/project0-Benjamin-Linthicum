@@ -22,6 +22,9 @@ public abstract class User {
     public void applyForAccount(String name, String type){
         return;
     }
+    public Account getAccount(String name){
+        return null;
+    }
 
     public ArrayList<Account> getAccounts(){
         return null;

@@ -126,4 +126,24 @@ public class UserDaoImpl implements UserDao{
         return false;
     }
 
+    @Override
+    public boolean deposit(String username, String accountName, double amount){
+        try(Connection conn = ConnectionUtil.getConnection()){
+            String sql = "UPDATE account SET balance = balance + ? WHERE user_name = ? AND account_name = ?;";
+            PreparedStatement statement = conn.prepareStatement(sql);
+            int count = 0;
+
+            statement.setDouble(++count, amount);
+            statement.setString(++count, username);
+            statement.setString(++count, accountName);
+            statement.execute();
+
+            return true;
+        }
+        catch(SQLException e){
+            e.printStackTrace();
+        }
+        return false;
+    }
+
 }

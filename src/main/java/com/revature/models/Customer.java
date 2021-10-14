@@ -26,6 +26,7 @@ public class Customer extends User{
         return accounts;
     }
 
+    @Override
     public Account getAccount(String name){
         for(Account a: accounts){
             if(a.getName().equals(name)){

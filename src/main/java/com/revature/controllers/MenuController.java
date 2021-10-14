@@ -92,10 +92,43 @@ public class MenuController {
                         System.out.println("An unexpected error occured. Account creation failed.");
                     }
                     break;
+
                 case "list":
                     userController.listAccounts(currentUser);
                     break;
+
                 case "deposit":
+                    System.out.println("What is the name of the account into which you would like to make a deposit?");
+                    userController.listAccounts(currentUser);
+                    String accountName = "";
+                    boolean accountFound = false;
+
+                    while(!accountFound){
+                        accountName = scan.nextLine();
+                        for(Account a: currentUser.getAccounts()){
+                            if(accountName.equals(a.getName())){
+                                accountFound = true;
+                                break;
+                            }
+                        }
+                        System.out.println("No such account with that name. Please try again.");
+                    }
+
+                    System.out.println("How much would you like to deposit?");
+                    double amount = 0.0;
+                    while(true){
+                        if(scan.hasNextDouble()){ // Potential bug, TEST THIS
+                            amount = scan.nextDouble();
+                            if(amount > 0.0){
+                                break;
+                            }
+                        }
+                        System.out.println("Invalid input. Please try again.");
+                    }
+                    if(userController.deposit(currentUser.getUserName(), accountName, amount)){
+                        System.out.println("Deposit successful. New balance:\n" + currentUser.getAccount(accountName).getName());
+                    }
+                    
                     break;
                 case "withdraw":
                     break;
