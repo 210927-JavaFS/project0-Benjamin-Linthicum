@@ -3,24 +3,12 @@ package com.revature.models;
 import java.util.*;
 
 public class Customer extends User{
-    
-    private String first_name;
-    private String last_name;
+
     private HashMap<String, Account> accounts; // key is the name of the account
 
     public Customer(String first_name, String last_name, String user_name, String password){
-        super(user_name, password);
-        this.first_name = first_name;
-        this.last_name = last_name;
+        super(user_name, password, first_name, last_name);
         this.accounts = new HashMap<String, Account>();
-    }
-
-    public String getFirstName(){
-        return first_name;
-    }
-
-    public String getLastName(){
-        return last_name;
     }
 
     public boolean applyForAccount(String type, String name){

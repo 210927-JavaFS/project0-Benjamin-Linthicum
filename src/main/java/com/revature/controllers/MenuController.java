@@ -1,12 +1,15 @@
 package com.revature.controllers;
 
 import java.util.Scanner;
+import java.util.Objects;
+import com.revature.models.*;
 
 public class MenuController {
     
     private static Scanner scan = new Scanner(System.in);
     private static AccountController accountController = new AccountController();
     private static UserController userController = new UserController();
+    private User currentUser;
 
     public void welcomeMenu(){
         String response = "";
@@ -44,7 +47,26 @@ public class MenuController {
     }
 
     private void registerMenu(){ //TODO
-
+        while(true){
+            System.out.println("Please input the username of your new account:");
+            String username = scan.nextLine();
+            if(!userController.isUsernameAvailable(username)){
+                System.out.println("Username is already taken.");
+                continue;
+            }
+            System.out.println("Please input the password of your new account:");
+            String password = scan.nextLine();
+            System.out.println("Please input your first name:");
+            String firstName = scan.nextLine();
+            System.out.println("Please input your last name:");
+            String lastName = scan.nextLine();
+            currentUser = userController.createNewUser(username, password, firstName, lastName);
+            if(Objects.isNull(currentUser)){
+                System.out.println("An unexpected error occured. Account creation failed.");
+                continue;
+            }
+            System.out.println("Account creation successful!");
+        }
     }
 
 }
