@@ -53,6 +53,9 @@ public class MenuController {
         boolean badResponse;
         do{
             badResponse = false;
+            String accountName = "";
+            boolean accountFound = false;
+            double amount = 0.0;
             switch (response) {
                 case "apply":
                     System.out.println("What would you like to name your account?");
@@ -100,8 +103,6 @@ public class MenuController {
                 case "deposit":
                     System.out.println("What is the name of the account into which you would like to make a deposit?");
                     userController.listAccounts(currentUser);
-                    String accountName = "";
-                    boolean accountFound = false;
 
                     while(!accountFound){
                         accountName = scan.nextLine();
@@ -115,7 +116,6 @@ public class MenuController {
                     }
 
                     System.out.println("How much would you like to deposit?");
-                    double amount = 0.0;
                     while(true){
                         if(scan.hasNextDouble()){ // Potential bug, TEST THIS
                             amount = scan.nextDouble();
@@ -128,18 +128,65 @@ public class MenuController {
                     if(userController.deposit(currentUser.getUserName(), accountName, amount)){
                         System.out.println("Deposit successful. New balance:\n" + currentUser.getAccount(accountName).getName());
                     }
+                    else{
+                        System.out.println("Deposit failed.");
+                    }
                     
                     break;
+
                 case "withdraw":
+                    System.out.println("What is the name of the account from which you would like to withdraw?");
+                    userController.listAccounts(currentUser);
+                    double withdrawAccountBalance = 0.0; // the current balance of the account being targetted for withdrawal
+
+                    while(!accountFound){
+                        accountName = scan.nextLine();
+                        for(Account a: currentUser.getAccounts()){
+                            if(accountName.equals(a.getName())){
+                                accountFound = true;
+                                withdrawAccountBalance = a.getBalance();
+                                System.out.println("Current balance: " + a.getBalance());
+                                break;
+                            }
+                        }
+                        System.out.println("No such account with that name. Please try again.");
+                    }
+
+                    System.out.println("How much would you like to withdraw?");
+                    while(true){
+                        if(scan.hasNextDouble()){ // Potential bug, TEST THIS
+                            amount = scan.nextDouble();
+                            if(amount > withdrawAccountBalance){
+                                System.out.println("This amount exceeds your current balance. Please enter a lower number.");
+                                continue;
+                            }
+                            if(amount >= 0.0){
+                                break;
+                            }
+                        }
+                        System.out.println("Invalid input. Please try again.");
+                    }
+
+                    if(userController.withdraw(currentUser.getUserName(), accountName, amount)){
+                        System.out.println("Withdrawal successful. New balance:\n" + currentUser.getAccount(accountName).getName());
+                    }
+                    else{
+                        System.out.println("Withdraw failed.");
+                    }
+
                     break;
+
                 case "transfer":
                     break;
+
                 case "logout":
                     return;
+
                 default:
                     System.out.println("Unrecognized response. Please check your spelling.");
                     badResponse = true;
             }
+            accountFound = false;
         } while(badResponse);
     }
 

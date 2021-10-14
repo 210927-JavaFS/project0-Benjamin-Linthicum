@@ -60,4 +60,8 @@ public class UserService {
         return userDao.deposit(username, accountName, amount);
     }
 
+    public boolean withdraw(String username, String accountName, double amount){
+        return userDao.withdraw(username, accountName, amount);
+    }
+
 }

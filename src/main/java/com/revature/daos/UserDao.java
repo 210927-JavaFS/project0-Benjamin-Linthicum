@@ -10,4 +10,5 @@ public interface UserDao {
     public ArrayList<Account> findAccountsByUser(String username);
     public boolean addAccount(String name, String type, User user);
     public boolean deposit(String username, String accountName, double amount);
+    public boolean withdraw(String username, String accountName, double amount);
 }

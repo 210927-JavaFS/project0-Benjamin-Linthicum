@@ -32,4 +32,8 @@ public class UserController {
         return userService.deposit(username, accountName, amount);
     }
 
+    public boolean withdraw(String username, String accountName, double amount){
+        return userService.withdraw(username, accountName, amount);
+    }
+
 }
