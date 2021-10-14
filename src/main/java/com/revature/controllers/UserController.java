@@ -8,8 +8,8 @@ public class UserController {
 
     private UserService userService = new UserService();
     
-    public boolean validateCredentials(String username, String password){
-        return userService.validateCredentials(username, password);
+    public User login(String username, String password){
+        return userService.login(username, password);
     }
 
     public boolean isUsernameAvailable(String username){

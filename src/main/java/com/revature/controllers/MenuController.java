@@ -5,52 +5,90 @@ import java.util.Objects;
 import com.revature.models.*;
 
 public class MenuController {
-    
+
     private static Scanner scan = new Scanner(System.in);
     private static AccountController accountController = new AccountController();
     private static UserController userController = new UserController();
     private User currentUser;
 
-    public void welcomeMenu(){
-        String response = "";
-        System.out.println("Welcome to the bank. Please choose one of the options:\n"
-            + "1: Login\n"
-            + "2: Register");
-        while(!response.equals("1") && !response.equals("2")){
-            response = scan.nextLine();
-            switch (response){
-                case "1":
-                    loginMenu();
-                    break;
-                case "2":
-                    registerMenu();
-                    break;
-                default:
-                    System.out.println("Invalid input. Please input \"1\" to login or \"2\" to register.");
+    public void welcomeMenu() {
+        while (true) {
+            if(!Objects.isNull(currentUser)){
+                userMenu();
+            }
+            String response = "";
+            System.out.println("Welcome to the bank. Please choose one of the options:\n" + "1: Login\n" + "2: Register");
+            while (!response.equals("1") && !response.equals("2")) {
+                response = scan.nextLine();
+                switch (response) {
+                    case "1":
+                        loginMenu();
+                        break;
+                    case "2":
+                        registerMenu();
+                        break;
+                    default:
+                        System.out.println("Invalid input. Please input \"1\" to login or \"2\" to register.");
+                }
             }
         }
     }
 
-    private void loginMenu(){ //TODO
-        while(true){
+    private void userMenu(){
+        System.out.println("Enter \"apply\" to apply for a new account.");
+        System.out.println("Enter \"list\" to obtain a list of your account information.");
+        System.out.println("Enter \"deposit\" to deposit into an account.");
+        System.out.println("Enter \"withdraw\" to withdraw from an account.");
+        System.out.println("Enter \"transfer\" to transfer money between accounts.");
+        System.out.println("Enter \"logout\" to logout.");
+        String response = "";
+        boolean badResponse;
+        do{
+            badResponse = false;
+            switch (response) {
+                case "apply":
+                    break;
+                case "list":
+                    break;
+                case "deposit":
+                    break;
+                case "withdraw":
+                    break;
+                case "transfer":
+                    break;
+                case "logout":
+                    return;
+                default:
+                    System.out.println("Unrecognized response. Please check your spelling.");
+                    badResponse = true;
+            }
+        } while(badResponse);
+    }
+
+    private void loginMenu() { // TODO
+        while (true) {
             System.out.println("Please input your username:");
             String username = scan.nextLine();
             System.out.println("Please input your password:");
             String password = scan.nextLine();
-            if(userController.validateCredentials(username, password)){
+            currentUser = userController.login(username, password);
+            if (!Objects.isNull(currentUser)) {
                 System.out.println("Login successful. Welcome.");
                 break;
             }
-            System.out.println("Login credentials invalid. Please try again.");
-
+            System.out.println("Type \"1\" to try again, and anything else to return to the menu.");
+            if (scan.nextLine().equals("1")) {
+                continue;
+            }
+            break;
         }
     }
 
-    private void registerMenu(){ //TODO
-        while(true){
+    private void registerMenu() { // TODO
+        while (true) {
             System.out.println("Please input the username of your new account:");
             String username = scan.nextLine();
-            if(!userController.isUsernameAvailable(username)){
+            if (!userController.isUsernameAvailable(username)) {
                 System.out.println("Username is already taken.");
                 continue;
             }
@@ -61,7 +99,7 @@ public class MenuController {
             System.out.println("Please input your last name:");
             String lastName = scan.nextLine();
             currentUser = userController.createNewUser(username, password, firstName, lastName);
-            if(Objects.isNull(currentUser)){
+            if (Objects.isNull(currentUser)) {
                 System.out.println("An unexpected error occured. Account creation failed.");
                 continue;
             }
