@@ -3,7 +3,7 @@ package com.revature.services;
 import com.revature.daos.UserDao;
 import com.revature.daos.UserDaoImpl;
 import com.revature.models.*;
-import java.util.Objects;
+import java.util.*;
 
 public class UserService {
 
@@ -18,6 +18,12 @@ public class UserService {
         else if(!encryptPassword(password).equals(user.getEncryptedPassword())){
             System.out.println("Password incorrect.");
             return null;
+        }
+        if(user instanceof Customer){
+            ArrayList<Account> accounts = userDao.findAccountsByUser(username);
+            for(Account a: accounts){
+                user.addAccount(a);
+            }
         }
         System.out.println("Login successful. Welcome, " + user.getFirstName() + ".");
         return user;
@@ -37,6 +43,13 @@ public class UserService {
 
     public User findByUserName(String username){
         return userDao.findByUserName(username);
+    }
+
+    public void listAccounts(User user){
+        ArrayList<Account> accounts = user.getAccounts();
+        for(Account a: accounts){
+            System.out.println(a);
+        }
     }
 
 }

@@ -20,4 +20,8 @@ public class UserController {
         return userService.createNewUser(username, password, firstName, lastName);
     }
 
+    public void listAccounts(User user){
+        userService.listAccounts(user);
+    }
+
 }

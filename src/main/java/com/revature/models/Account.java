@@ -6,6 +6,13 @@ public class Account {
     private double balance;
     private boolean isApproved;
 
+    public Account (String type, String name, double balance, boolean isApproved){
+        this.type = type;
+        this.name = name;
+        this.balance = balance;
+        this.isApproved = isApproved;
+    }
+
     public Account (String type, String name){
         this.type = type;
         this.name = name;
@@ -15,6 +22,10 @@ public class Account {
 
     public double getBalance(){
         return balance;
+    }
+
+    public boolean getIsApproved(){
+        return isApproved;
     }
 
     public String getType(){
@@ -47,6 +58,11 @@ public class Account {
             return true;
         }
         return false;
+    }
+
+    @Override
+    public String toString(){
+        return "Name: " + name + ", Type: " + type + ", Balance: " + balance + (isApproved ? ", Approved" : ", Pending Approval");
     }
 
 }

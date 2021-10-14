@@ -1,4 +1,5 @@
 package com.revature.models;
+import java.util.*;
 
 public abstract class User {
     
@@ -12,6 +13,14 @@ public abstract class User {
         this.password = password;
         this.first_name = first_name;
         this.last_name = last_name;
+    }
+
+    public void addAccount(Account a){
+        return;
+    }
+
+    public ArrayList<Account> getAccounts(){
+        return null;
     }
 
     public String getUserName(){

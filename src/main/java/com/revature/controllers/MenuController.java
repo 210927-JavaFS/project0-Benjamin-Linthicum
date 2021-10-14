@@ -1,6 +1,9 @@
 package com.revature.controllers;
 
 import java.util.Scanner;
+
+import javax.lang.model.util.ElementScanner14;
+
 import java.util.Objects;
 import com.revature.models.*;
 
@@ -14,7 +17,12 @@ public class MenuController {
     public void welcomeMenu() {
         while (true) {
             if(!Objects.isNull(currentUser)){
-                userMenu();
+                if(currentUser instanceof Customer)
+                    CustomerMenu();
+                else if(currentUser instanceof Employee)
+                    employeeMenu();
+                else
+                    adminMenu();
             }
             String response = "";
             System.out.println("Welcome to the bank. Please choose one of the options:\n" + "1: Login\n" + "2: Register");
@@ -34,7 +42,7 @@ public class MenuController {
         }
     }
 
-    private void userMenu(){
+    private void CustomerMenu(){
         System.out.println("Enter \"apply\" to apply for a new account.");
         System.out.println("Enter \"list\" to obtain a list of your account information.");
         System.out.println("Enter \"deposit\" to deposit into an account.");
@@ -49,6 +57,7 @@ public class MenuController {
                 case "apply":
                     break;
                 case "list":
+                    userController.listAccounts(currentUser);
                     break;
                 case "deposit":
                     break;
@@ -65,7 +74,15 @@ public class MenuController {
         } while(badResponse);
     }
 
-    private void loginMenu() { // TODO
+    private void employeeMenu(){
+        //TODO
+    }
+
+    private void adminMenu(){
+        //TODO
+    }
+
+    private void loginMenu() {
         while (true) {
             System.out.println("Please input your username:");
             String username = scan.nextLine();
@@ -84,7 +101,7 @@ public class MenuController {
         }
     }
 
-    private void registerMenu() { // TODO
+    private void registerMenu() {
         while (true) {
             System.out.println("Please input the username of your new account:");
             String username = scan.nextLine();

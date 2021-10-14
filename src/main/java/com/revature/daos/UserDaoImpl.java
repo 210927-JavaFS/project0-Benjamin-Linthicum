@@ -5,6 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.*;
 
 import javax.lang.model.util.ElementScanner14;
 
@@ -53,7 +54,7 @@ public class UserDaoImpl implements UserDao{
     @Override
     public boolean insertNewUser(User user){
         try(Connection conn = ConnectionUtil.getConnection()){
-            String sql = "INSERT INTO bankuser VALUES (?,?,?,?,?)";
+            String sql = "INSERT INTO bankuser VALUES (?,?,?,?,?);";
             PreparedStatement statement = conn.prepareStatement(sql);
             int count = 0;
 
@@ -75,6 +76,29 @@ public class UserDaoImpl implements UserDao{
             e.printStackTrace();
         }
         return false;
+    }
+
+    @Override
+    public ArrayList<Account> findAccountsByUser(String username){
+        try(Connection conn = ConnectionUtil.getConnection()){
+            String sql = "SELECT * FROM account WHERE user_name = ?;";
+            PreparedStatement statement = conn.prepareStatement(sql);
+            statement.setString(1, username);
+            ArrayList<Account> accounts = new ArrayList<Account>();
+            ResultSet result = statement.executeQuery();
+            while(result.next()){
+                accounts.add(new Account(result.getString("account_type"),
+                                         result.getString("account_name"),
+                                         result.getDouble("balance"),
+                                         result.getBoolean("isApproved"))); 
+            }
+
+            return accounts;
+        }
+        catch (SQLException e){
+            e.printStackTrace();
+        }
+        return null;
     }
 
 }
