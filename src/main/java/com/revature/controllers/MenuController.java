@@ -493,7 +493,7 @@ public class MenuController {
         			String employeeName = "";
         			while(true) {
         				employeeName = scan.nextLine();
-            			if(userController.isUsernameAvailable(employeeName)){
+            			if(!userController.isUsernameAvailable(employeeName)){
             				break;
             			}
             			System.out.println("Employee not found. Re-enter username.");
