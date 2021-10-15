@@ -91,5 +91,17 @@ public class UserService {
     	}
     	return true;
     }
+    
+    public boolean listTransgressions() {
+    	ArrayList<Transgressions> transgressions = userDao.getAllTransgressions();
+    	if(transgressions.isEmpty()){
+    		return false;
+    	}
+    	System.out.print("\n");
+    	for(Transgressions t: transgressions){
+    		System.out.println(t);
+    	}
+    	return true;
+    }
 
 }

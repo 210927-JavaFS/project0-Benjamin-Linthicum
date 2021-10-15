@@ -51,5 +51,9 @@ public class UserController {
     public boolean listEmployees(){
     	return userService.listEmployees();
     }
+    
+    public boolean listTransgressions(){
+    	return userService.listTransgressions();
+    }
 
 }

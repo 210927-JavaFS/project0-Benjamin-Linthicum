@@ -399,8 +399,10 @@ public class MenuController {
     		System.out.println("\nEnter \"list accounts\" to list all accounts.");
     		System.out.println("Enter \"screen accounts\" to approve/deny pending accounts.");
     		System.out.println("Enter \"list customers\" to list all customers.");
-    		System.out.println("Enter \"logout\" to logout.\n");
+    		System.out.println("Enter \"logout\" to logout.");
     		System.out.println("Enter \"list employees\" to list all employees.");
+    		System.out.println("Enter \"view transgressions\" to decide who to antagonize today.");
+    		System.out.println("Enter \"add note\" to make a note against an employee.\n");
     		String response = scan.nextLine();
     		switch(response) {
         		case "list accounts":
@@ -473,6 +475,12 @@ public class MenuController {
         		case "list employees":
         			if(!userController.listEmployees()) {
         				System.out.println("An unexpected error occured.");
+        			}
+        			break;
+        			
+        		case "view transgressions":
+        			if(!userController.listTransgressions()) {
+        				System.out.println("An uexpected error occured.");
         			}
         			break;
         		

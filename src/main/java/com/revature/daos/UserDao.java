@@ -15,4 +15,5 @@ public interface UserDao {
     public void incrementMispelling(String username);
     public ArrayList<Customer> getAllCustomers();
     public ArrayList<Employee> getAllEmployees();
+    public ArrayList<Transgressions> getAllTransgressions();
 }

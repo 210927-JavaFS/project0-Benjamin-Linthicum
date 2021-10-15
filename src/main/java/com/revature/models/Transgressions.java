@@ -23,5 +23,10 @@ public class Transgressions{
     public int getMispellings() {
     	return mispellings;
     }
+    
+    @Override
+    public String toString() {
+    	return "Employee username: " + username + ", Mispellings: " + mispellings + "\nNotes: " + note + "\n"; 
+    }
 
 }

@@ -252,5 +252,25 @@ public class UserDaoImpl implements UserDao{
         }
     	return employees;
     }
+    
+    @Override
+    public ArrayList<Transgressions> getAllTransgressions(){
+    	ArrayList<Transgressions> transgressions = new ArrayList<Transgressions>();
+    	try(Connection conn = ConnectionUtil.getConnection()){
+            String sql = "SELECT * FROM transgressions";
+            PreparedStatement statement = conn.prepareStatement(sql);
+            ResultSet result = statement.executeQuery();
+            while(result.next()){
+            	transgressions.add(new Transgressions(result.getString("note"),
+                                         			  result.getInt("mispellings"),
+                                         			  result.getString("user_name"))); 
+            }
+            return transgressions;
+        }
+        catch(SQLException e){
+            e.printStackTrace();
+        }
+    	return transgressions;
+    }
 
 }
