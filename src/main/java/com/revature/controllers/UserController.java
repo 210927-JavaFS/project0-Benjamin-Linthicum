@@ -36,4 +36,8 @@ public class UserController {
         return userService.withdraw(username, accountName, amount);
     }
 
+    public boolean transfer(String username, String fromName, String toName, double amount){
+        return userService.transfer(username, fromName, toName, amount);
+    }
+
 }

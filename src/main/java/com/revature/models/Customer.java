@@ -36,6 +36,17 @@ public class Customer extends User{
         return null;
     }
 
+    @Override
+    public int getApprovedAccountCount(){
+        int count = 0;
+        for(Account a: accounts){
+            if(a.getIsApproved())
+                count++;
+        }
+        return count;
+    }
+
+    @Override
     public boolean transferFunds(String fromName, String targetName, double amount){
         return getAccount(fromName).transferTo(getAccount(targetName), amount);
     }

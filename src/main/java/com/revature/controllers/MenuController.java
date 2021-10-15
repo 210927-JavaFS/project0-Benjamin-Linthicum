@@ -56,6 +56,7 @@ public class MenuController {
             String accountName = "";
             boolean accountFound = false;
             double amount = 0.0;
+            double withdrawAccountBalance = 0.0; // the current balance of the account being targetted for withdrawal
             switch (response) {
                 case "apply":
                     System.out.println("What would you like to name your account?");
@@ -101,6 +102,10 @@ public class MenuController {
                     break;
 
                 case "deposit":
+                    if(currentUser.getApprovedAccountCount() < 1){
+                        System.out.println("You have no approved accounts. Unable to perform a deposit.");
+                        break;
+                    }
                     System.out.println("What is the name of the account into which you would like to make a deposit?");
                     userController.listAccounts(currentUser);
 
@@ -126,7 +131,8 @@ public class MenuController {
                         System.out.println("Invalid input. Please try again.");
                     }
                     if(userController.deposit(currentUser.getUserName(), accountName, amount)){
-                        System.out.println("Deposit successful. New balance:\n" + currentUser.getAccount(accountName).getName());
+                        currentUser.getAccount(accountName).deposit(amount);
+                        System.out.println("Deposit successful. New balance:\n" + currentUser.getAccount(accountName).getBalance());
                     }
                     else{
                         System.out.println("Deposit failed.");
@@ -135,9 +141,12 @@ public class MenuController {
                     break;
 
                 case "withdraw":
+                    if(currentUser.getApprovedAccountCount() < 1){
+                        System.out.println("You have no approved accounts. Unable to perform a withdrawal.");
+                        break;
+                    }
                     System.out.println("What is the name of the account from which you would like to withdraw?");
                     userController.listAccounts(currentUser);
-                    double withdrawAccountBalance = 0.0; // the current balance of the account being targetted for withdrawal
 
                     while(!accountFound){
                         accountName = scan.nextLine();
@@ -168,7 +177,8 @@ public class MenuController {
                     }
 
                     if(userController.withdraw(currentUser.getUserName(), accountName, amount)){
-                        System.out.println("Withdrawal successful. New balance:\n" + currentUser.getAccount(accountName).getName());
+                        currentUser.getAccount(accountName).withdraw(amount);
+                        System.out.println("Withdrawal successful. New balance:\n" + currentUser.getAccount(accountName).getBalance());
                     }
                     else{
                         System.out.println("Withdraw failed.");
@@ -177,6 +187,65 @@ public class MenuController {
                     break;
 
                 case "transfer":
+                    if(currentUser.getApprovedAccountCount() < 2){
+                        System.out.println("You must have atleast two approved accounts in order to perform a transfer.");
+                        break;
+                    }
+                    String targetAccountName = ""; // The account to be transferred to
+                    System.out.println("Enter the name of the account to withdraw from in this transfer.");
+                    userController.listAccounts(currentUser);
+
+                    while(!accountFound){
+                        accountName = scan.nextLine();
+                        for(Account a: currentUser.getAccounts()){
+                            if(accountName.equals(a.getName())){
+                                withdrawAccountBalance = a.getBalance();
+                                accountFound = true;
+                                break;
+                            }
+                        }
+                        System.out.println("No such account with that name. Please try again.");
+                    }
+                    System.out.println("Enter the name of the account to deposit to in this transfer.");
+                    accountFound = false;
+                    while(!accountFound){
+                        targetAccountName = scan.nextLine();
+                        for(Account a: currentUser.getAccounts()){
+                            if(targetAccountName.equals(a.getName())){
+                                if(targetAccountName.equals(accountName)){
+                                    System.out.println("They must be different accounts. Please enter a different account to transfer to.");
+                                }
+                                accountFound = true;
+                                break;
+                            }
+                        }
+                        if(!targetAccountName.equals(accountName)){
+                            System.out.println("No such account with that name. Please try again.");
+                        }
+                    }
+
+                    System.out.println("How much would you like to transfer?");
+                    while(true){
+                        if(scan.hasNextDouble()){ // Potential bug, TEST THIS
+                            amount = scan.nextDouble();
+                            if(amount > withdrawAccountBalance){
+                                System.out.println("This amount exceeds the balance of your account. Please enter a lower number.");
+                                continue;
+                            }
+                            if(amount >= 0.0){
+                                break;
+                            }
+                        }
+                        System.out.println("Invalid input. Please try again.");
+                    }
+
+                    if(userController.transfer(currentUser.getUserName(), accountName, targetAccountName, amount)){
+                        currentUser.transferFunds(accountName, targetAccountName, amount);
+                        System.out.println("Transfer successful. New balances:");
+                        System.out.println(currentUser.getAccount(accountName).getName() + ": " + currentUser.getAccount(accountName).getBalance());
+                        System.out.println(currentUser.getAccount(targetAccountName).getName() + ": " + currentUser.getAccount(targetAccountName).getBalance());
+                    }
+
                     break;
 
                 case "logout":

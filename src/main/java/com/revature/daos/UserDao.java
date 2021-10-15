@@ -11,4 +11,5 @@ public interface UserDao {
     public boolean addAccount(String name, String type, User user);
     public boolean deposit(String username, String accountName, double amount);
     public boolean withdraw(String username, String accountName, double amount);
+    public boolean transfer(String username, String fromName, String toName, double amount);
 }

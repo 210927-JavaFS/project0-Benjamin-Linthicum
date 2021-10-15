@@ -64,4 +64,8 @@ public class UserService {
         return userDao.withdraw(username, accountName, amount);
     }
 
+    public boolean transfer(String username, String fromName, String toName, double amount){
+        return userDao.transfer(username, fromName, toName, amount);
+    }
+
 }

@@ -166,4 +166,25 @@ public class UserDaoImpl implements UserDao{
         return false;
     }
 
+    @Override
+    public boolean transfer(String username, String fromName, String toName, double amount){
+        try(Connection conn = ConnectionUtil.getConnection()){
+            String sql = "EXEC Transfer @user_name = ?, @from_name = ?, @to_name = ?, @amount = ?";
+            PreparedStatement statement = conn.prepareStatement(sql);
+            int count = 0;
+
+            statement.setString(++count, username);
+            statement.setString(++count, fromName);
+            statement.setString(++count, toName);
+            statement.setDouble(++count, amount);
+            statement.execute();
+
+            return true;
+        }
+        catch(SQLException e){
+            e.printStackTrace();
+        }
+        return false;
+    }
+
 }

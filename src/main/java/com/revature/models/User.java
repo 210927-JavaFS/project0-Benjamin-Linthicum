@@ -30,6 +30,10 @@ public abstract class User {
         return null;
     }
 
+    public int getApprovedAccountCount(){
+        return 0;
+    }
+
     public String getUserName(){
         return user_name;
     }
@@ -44,6 +48,10 @@ public abstract class User {
 
     public String getLastName(){
         return last_name;
+    }
+
+    public boolean transferFunds(String fromName, String targetName, double amount){
+        return false;
     }
 
 }
