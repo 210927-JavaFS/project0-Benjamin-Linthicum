@@ -44,15 +44,19 @@ public class MenuController {
 
     private void CustomerMenu(){
         String response = "";
-        do{
-        	System.out.println("\nEnter \"apply\" to apply for a new account.");
-            System.out.println("Enter \"list\" to obtain a list of your account information.");
-            System.out.println("Enter \"deposit\" to deposit into an account.");
-            System.out.println("Enter \"withdraw\" to withdraw from an account.");
-            System.out.println("Enter \"transfer\" to transfer money between accounts.");
-            System.out.println("Enter \"logout\" to logout.\n");
+        boolean accountFound = false;
+        boolean justTransfered = false; //True if deposit, withdraw or transfer were called. Intended to fix a printing error.
+        while(true) {
+        	if(!justTransfered) {
+        		System.out.println("\nEnter \"apply\" to apply for a new account.");
+            	System.out.println("Enter \"list\" to obtain a list of your account information.");
+            	System.out.println("Enter \"deposit\" to deposit into an account.");
+            	System.out.println("Enter \"withdraw\" to withdraw from an account.");
+            	System.out.println("Enter \"transfer\" to transfer money between accounts.");
+            	System.out.println("Enter \"logout\" to logout.\n");
+        	}
             String accountName = "";
-            boolean accountFound = false;
+            accountFound = false;
             double amount = 0.0;
             double withdrawAccountBalance = 0.0; // the current balance of the account being targetted for withdrawal
             response = scan.nextLine();
@@ -123,12 +127,13 @@ public class MenuController {
 
                     System.out.println("How much would you like to deposit?");
                     while(true){
-                        if(scan.hasNextDouble()){ // Potential bug, TEST THIS
+                    	try {
                             amount = scan.nextDouble();
                             if(amount > 0.0){
                                 break;
                             }
-                        }
+                    	}
+                    	catch (InputMismatchException e) {}
                         System.out.println("\nInvalid input. Please try again.");
                     }
                     if(userController.deposit(currentUser.getUserName(), accountName, amount)){
@@ -138,6 +143,8 @@ public class MenuController {
                     else{
                         System.out.println("\nDeposit failed.");
                     }
+                    
+                    justTransfered = true;
                     
                     break;
 
@@ -186,6 +193,8 @@ public class MenuController {
                     else{
                         System.out.println("\nWithdraw failed.");
                     }
+                    
+                    justTransfered = true;
 
                     break;
 
@@ -248,6 +257,8 @@ public class MenuController {
                         System.out.println(currentUser.getAccount(accountName).getName() + ": " + currentUser.getAccount(accountName).getBalance());
                         System.out.println(currentUser.getAccount(targetAccountName).getName() + ": " + currentUser.getAccount(targetAccountName).getBalance());
                     }
+                    
+                    justTransfered = true;
 
                     break;
 
@@ -255,10 +266,14 @@ public class MenuController {
                     return;
 
                 default:
-                    System.out.println("\nUnrecognized response. Please check your spelling.");
+                	if(!justTransfered) {
+                		System.out.println("\nUnrecognized response. Please check your spelling.");
+                	}
+                	justTransfered = false;
+                    break;
             }
             accountFound = false;
-        } while(true);
+        }
     }
 
     private void employeeMenu(){
