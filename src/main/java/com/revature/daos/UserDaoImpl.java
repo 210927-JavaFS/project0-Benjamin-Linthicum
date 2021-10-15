@@ -24,28 +24,33 @@ public class UserDaoImpl implements UserDao{
             statement.setString(1, username);
             ResultSet result = statement.executeQuery();
 
-            if(result.getString("account_type").equals("Customer")){
-                user = new Customer(result.getString("first_name"),
-                                    result.getString("last_name"),
-                                    result.getString("user_name"),
-                                    result.getString("pass"));
-            }
-            else if(result.getString("account_type").equals("Employee")){
-                user = new Employee(result.getString("first_name"),
-                                    result.getString("last_name"),
-                                    result.getString("user_name"),
-                                    result.getString("pass"));
-            }
-            else if(result.getString("account_type").equals("Admin")){
-                user = new Admin(result.getString("first_name"),
-                                    result.getString("last_name"),
-                                    result.getString("user_name"),
-                                    result.getString("pass"));
+            if(result.next()) {
+            	if(result.getString("accesslevel").equals("Customer")){
+            		user = new Customer(result.getString("first_name"),
+            				result.getString("last_name"),
+            				result.getString("user_name"),
+            				result.getString("pass"));
+            	}
+            	else if(result.getString("accesslevel").equals("Employee")){
+            		user = new Employee(result.getString("first_name"),
+            				result.getString("last_name"),
+            				result.getString("user_name"),
+            				result.getString("pass"));
+            	}	
+            	else if(result.getString("accesslevel").equals("Admin")){
+            		user = new Admin(result.getString("first_name"),
+            				result.getString("last_name"),
+            				result.getString("user_name"),
+            				result.getString("pass"));
+            	}
             }
             return user;
 
         }
         catch (SQLException e){
+        	/*if(e.getMessage().substring(0, 10).equals("The column")) {
+    			return null;
+    		}*/
             e.printStackTrace();
         }
         return null; //TODO
@@ -59,7 +64,6 @@ public class UserDaoImpl implements UserDao{
             int count = 0;
 
             statement.setString(++count, user.getUserName());
-            statement.setString(++count, user.getEncryptedPassword());
             statement.setString(++count, user.getFirstName());
             statement.setString(++count, user.getLastName());
             if(user instanceof Customer) // right now, this is the only possible result
@@ -68,7 +72,10 @@ public class UserDaoImpl implements UserDao{
                 statement.setString(++count, "Employee");
             else
                 statement.setString(++count, "Admin");
-            return statement.execute();
+            statement.setString(++count, user.getEncryptedPassword());
+            statement.execute();
+            
+            return true;
         }
         catch (SQLException e){
             e.printStackTrace();
@@ -78,11 +85,11 @@ public class UserDaoImpl implements UserDao{
 
     @Override
     public ArrayList<Account> findAccountsByUser(String username){
+    	ArrayList<Account> accounts = new ArrayList<Account>();
         try(Connection conn = ConnectionUtil.getConnection()){
             String sql = "SELECT * FROM account WHERE user_name = ?;";
             PreparedStatement statement = conn.prepareStatement(sql);
             statement.setString(1, username);
-            ArrayList<Account> accounts = new ArrayList<Account>();
             ResultSet result = statement.executeQuery();
             while(result.next()){
                 accounts.add(new Account(result.getString("account_type"),
@@ -95,6 +102,9 @@ public class UserDaoImpl implements UserDao{
             return accounts;
         }
         catch (SQLException e){
+        	if(e.getMessage().substring(0, 10).equals("The column")) {
+    			return accounts;
+    		}
             e.printStackTrace();
         }
         return null;
@@ -103,7 +113,7 @@ public class UserDaoImpl implements UserDao{
     @Override
     public boolean addAccount(String name, String type, User user){
         try(Connection conn = ConnectionUtil.getConnection()){
-            String sql = "INSERT INTO account VALUES (account_name, user_name, account_type, balance, isApproved) " +
+            String sql = "INSERT INTO account (account_name, user_name, account_type, balance, isApproved) " +
                          "VALUES (?,?,?,?,?)";
             PreparedStatement statement = conn.prepareStatement(sql);
             int count = 0;
@@ -135,7 +145,9 @@ public class UserDaoImpl implements UserDao{
             statement.setDouble(++count, amount);
             statement.setString(++count, username);
             statement.setString(++count, accountName);
-            return statement.execute();
+            statement.execute();
+            
+            return true;
         }
         catch(SQLException e){
             e.printStackTrace();
@@ -153,7 +165,9 @@ public class UserDaoImpl implements UserDao{
             statement.setDouble(++count, amount);
             statement.setString(++count, username);
             statement.setString(++count, accountName);
-            return statement.execute();
+            statement.execute();
+            
+            return true;
         }
         catch(SQLException e){
             e.printStackTrace();

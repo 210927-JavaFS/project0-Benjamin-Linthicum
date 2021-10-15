@@ -50,13 +50,12 @@ public class MenuController {
         System.out.println("Enter \"transfer\" to transfer money between accounts.");
         System.out.println("Enter \"logout\" to logout.");
         String response = "";
-        boolean badResponse;
         do{
-            badResponse = false;
             String accountName = "";
             boolean accountFound = false;
             double amount = 0.0;
             double withdrawAccountBalance = 0.0; // the current balance of the account being targetted for withdrawal
+            response = scan.nextLine();
             switch (response) {
                 case "apply":
                     System.out.println("What would you like to name your account?");
@@ -253,10 +252,9 @@ public class MenuController {
 
                 default:
                     System.out.println("Unrecognized response. Please check your spelling.");
-                    badResponse = true;
             }
             accountFound = false;
-        } while(badResponse);
+        } while(true);
     }
 
     private void employeeMenu(){
@@ -352,7 +350,6 @@ public class MenuController {
             String password = scan.nextLine();
             currentUser = userController.login(username, password);
             if (!Objects.isNull(currentUser)) {
-                System.out.println("Login successful. Welcome.");
                 break;
             }
             System.out.println("Type \"1\" to try again, and anything else to return to the menu.");
@@ -383,6 +380,7 @@ public class MenuController {
                 continue;
             }
             System.out.println("Account creation successful!");
+            break;
         }
     }
 

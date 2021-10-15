@@ -13,7 +13,7 @@ public class ConnectionUtil {
 			e.printStackTrace();
 		}
 		
-		String url = "javafs-210927-project-0.ci49jbdfz59e.us-east-2.rds.amazonaws.com";
+		String url = "jdbc:postgresql://javafs-210927-project-0.ci49jbdfz59e.us-east-2.rds.amazonaws.com:5432/Project0";
 		String username = "postgres";
 		String password = "password";
 		

@@ -32,6 +32,9 @@ public class AccountDaoImpl implements AccountDao{
     		}
     	}
     	catch(SQLException e) {
+    		if(e.getMessage().substring(0, 10).equals("The column")) {
+    			return accounts;
+    		}
     		e.printStackTrace();
     	}
     	
@@ -46,7 +49,9 @@ public class AccountDaoImpl implements AccountDao{
     		
     		statement.setString(++count, account.getName());
     		statement.setString(++count, account.getUsername());
-    		return statement.execute();
+    		statement.execute();
+    		
+    		return true;
     		
     	}
     	catch(SQLException e) {
