@@ -17,9 +17,9 @@ public class AccountDaoImpl implements AccountDao{
     public ArrayList<Account> getAllAccounts(boolean unapprovedOnly){
     	ArrayList<Account> accounts = new ArrayList<Account>();
     	try(Connection conn = ConnectionUtil.getConnection()){
-    		String sql = "SELECT * FROM account;";
+    		String sql = "SELECT * FROM account ORDER BY user_name;";
     		if(unapprovedOnly) {
-    			sql = "SELECT * FROM account WHERE account.isApproved = true;";
+    			sql = "SELECT * FROM account WHERE account.isApproved = false;";
     		}
     		PreparedStatement statement = conn.prepareStatement(sql);
     		ResultSet results = statement.executeQuery();
@@ -69,7 +69,9 @@ public class AccountDaoImpl implements AccountDao{
     		
     		statement.setString(++count, account.getName());
     		statement.setString(++count, account.getUsername());
-    		return statement.execute();
+    		statement.execute();
+    		
+    		return true;
     		
     	}
     	catch(SQLException e) {
