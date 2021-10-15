@@ -50,5 +50,10 @@ public class Customer extends User{
     public boolean transferFunds(String fromName, String targetName, double amount){
         return getAccount(fromName).transferTo(getAccount(targetName), amount);
     }
+    
+    @Override
+    public String toString() {
+    	return "First name: " + this.getFirstName() + ", Last name: " + this.getLastName() + ", Username: " + this.getUserName();
+    }
 
 }

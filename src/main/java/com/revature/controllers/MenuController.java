@@ -311,8 +311,96 @@ public class MenuController {
     	while(true) {
     		System.out.println("\nEnter \"list accounts\" to list all accounts.");
     		System.out.println("Enter \"screen accounts\" to approve/deny pending accounts.");
-    		System.out.println("Enter \"list users\" to list all users.");
+    		System.out.println("Enter \"list customers\" to list all customers.");
     		System.out.println("Enter \"logout\" to logout.\n");
+    		String response = scan.nextLine();
+    		switch(response) {
+        		case "list accounts":
+        			accountController.listAllAccounts();
+        			break;
+        		
+        		case "screen accounts":
+        			ArrayList<Account> accounts = accountController.getAllUnapprovedAccounts();
+        			if(accounts.isEmpty()) {
+        				System.out.println("\nThere are no pending accounts.");
+        				break;
+        			}
+        			for(Account a: accounts) {
+        				System.out.println(a);
+        			}
+        			String username = "";
+        			String accountName = "";
+        			boolean notFound = true;
+        			Account defendent = null;
+        			while(notFound) {
+        				System.out.println("\nEnter the username of the owner of the account to judge:");
+            			username = scan.nextLine();
+            			System.out.println("Enter the name of the account to judge:");
+            			accountName = scan.nextLine();
+        				for(Account a: accounts) {
+        					if(username.equals(a.getUsername()) && accountName.equals(a.getName())){
+        						defendent = a;
+        						notFound = false;
+        						break;
+        					}
+        				}
+        				if(notFound) {
+        					System.out.println("\nNo such pending account exists.\n");
+        					userController.incrementMispelling(currentUser.getUserName());
+        				}
+        			}
+        			System.out.println("Enter \"approve\" or \"deny\":");
+        			while(true) {
+        				response = scan.nextLine();
+        				if(response.equals("approve")) {
+        					if(accountController.approveAccount(defendent)) {
+        						System.out.println("\nAccount approved successfully.");
+        						defendent.approve();
+        					}
+        					else {
+        						System.out.println("\nAn error occured while attempting to approve account.");
+        					}
+        					break;
+        				}
+        				else if(response.equals("deny")) {
+        					if(accountController.denyAccount(defendent)) {
+        						System.out.println("\nAccount denied successfully, I hope you're happy.");
+        					}
+        					else {
+        						System.out.println("\nAn error occured while attempting to deny account.");
+        					}
+        					break;
+        				}
+        				else {
+        					System.out.println("Please enter a valid response.");
+        					userController.incrementMispelling(currentUser.getUserName());
+        				}
+        			}
+        			break;
+        		
+        		case "list customers":
+        			if(!userController.listCustomers()) {
+        				System.out.println("An unexpected error occured.");
+        			}
+        			break;
+        		
+        		case "logout":
+        			return;
+        		
+        		default:
+        			System.out.println("Invalid input. As you spell your next entry, please consider that we are paying you.");
+        			userController.incrementMispelling(currentUser.getUserName());
+    		}
+    	}
+    }
+
+    private void adminMenu(){
+    	while(true) {
+    		System.out.println("\nEnter \"list accounts\" to list all accounts.");
+    		System.out.println("Enter \"screen accounts\" to approve/deny pending accounts.");
+    		System.out.println("Enter \"list customers\" to list all customers.");
+    		System.out.println("Enter \"logout\" to logout.\n");
+    		System.out.println("Enter \"list employees\" to list all employees.");
     		String response = scan.nextLine();
     		switch(response) {
         		case "list accounts":
@@ -376,20 +464,25 @@ public class MenuController {
         			}
         			break;
         		
-        		case "list users":
+        		case "list customers":
+        			if(!userController.listCustomers()) {
+        				System.out.println("An unexpected error occured.");
+        			}
+        			break;
+        			
+        		case "list employees":
+        			if(!userController.listEmployees()) {
+        				System.out.println("An unexpected error occured.");
+        			}
         			break;
         		
         		case "logout":
         			return;
         		
         		default:
-        			System.out.println("Invalid input. As you spell your next entry, please consider that we are paying you.");
+        			System.out.println("Invalid input. It's okay, everyone makes mistakes.");
     		}
     	}
-    }
-
-    private void adminMenu(){
-        //TODO
     }
 
     private void loginMenu() {

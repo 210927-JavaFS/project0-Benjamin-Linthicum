@@ -195,5 +195,62 @@ public class UserDaoImpl implements UserDao{
         }
         return false;
     }
+    
+    @Override
+    public void incrementMispelling(String username) {
+    	try(Connection conn = ConnectionUtil.getConnection()){
+            String sql = "UPDATE transgressions SET mispellings = mispellings + 1 WHERE user_name = ?";
+            PreparedStatement statement = conn.prepareStatement(sql);
+            statement.setString(1, username);
+            statement.execute();
+        }
+        catch(SQLException e){
+            e.printStackTrace();
+        }
+    }
+    
+    @Override
+    public ArrayList<Customer> getAllCustomers(){
+    	ArrayList<Customer> customers = new ArrayList<Customer>(); //String first_name, String last_name, String user_name, String password
+    	try(Connection conn = ConnectionUtil.getConnection()){
+            String sql = "SELECT * FROM bankuser WHERE accesslevel = ?";
+            PreparedStatement statement = conn.prepareStatement(sql);
+            statement.setString(1, "Customer");
+            ResultSet result = statement.executeQuery();
+            while(result.next()){
+                customers.add(new Customer(result.getString("first_name"),
+                                         result.getString("last_name"),
+                                         result.getString("user_name"),
+                                         result.getString("pass"))); 
+            }
+            return customers;
+        }
+        catch(SQLException e){
+            e.printStackTrace();
+        }
+    	return customers;
+    }
+    
+    @Override
+    public ArrayList<Employee> getAllEmployees(){
+    	ArrayList<Employee> employees = new ArrayList<Employee>();
+    	try(Connection conn = ConnectionUtil.getConnection()){
+            String sql = "SELECT * FROM bankuser WHERE accesslevel = ?";
+            PreparedStatement statement = conn.prepareStatement(sql);
+            statement.setString(1, "Employee");
+            ResultSet result = statement.executeQuery();
+            while(result.next()){
+            	employees.add(new Employee(result.getString("user_name"),
+                                         result.getString("pass"),
+                                         result.getString("first_name"),
+                                         result.getString("last_name"))); 
+            }
+            return employees;
+        }
+        catch(SQLException e){
+            e.printStackTrace();
+        }
+    	return employees;
+    }
 
 }

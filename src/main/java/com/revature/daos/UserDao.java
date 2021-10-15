@@ -12,4 +12,7 @@ public interface UserDao {
     public boolean deposit(String username, String accountName, double amount);
     public boolean withdraw(String username, String accountName, double amount);
     public boolean transfer(String username, String fromName, String toName, double amount);
+    public void incrementMispelling(String username);
+    public ArrayList<Customer> getAllCustomers();
+    public ArrayList<Employee> getAllEmployees();
 }

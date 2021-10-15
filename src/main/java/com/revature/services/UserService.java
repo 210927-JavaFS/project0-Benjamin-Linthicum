@@ -9,7 +9,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 public class UserService {
 
     private UserDao userDao = new UserDaoImpl();
-    BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+    BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(10);
     
     public User login(String username, String password){
         User user = findByUserName(username);
@@ -17,7 +17,7 @@ public class UserService {
             System.out.println("No such user found. Please check that you entered the username correctly.");
             return null;
         }
-        else if(encoder.matches(password, user.getEncryptedPassword())){
+        else if(encoder.encode(password).equals(user.getEncryptedPassword())){
             System.out.println("Password incorrect.");
             return null;
         }
@@ -31,9 +31,8 @@ public class UserService {
         return user;
     }
 
-    public Customer createNewUser(String username, String password, String firstName, String lastName){
-    	encoder.encode(password);
-        Customer customer = new Customer(firstName, lastName, username, password);
+    public Customer createNewUser(String username, String password, String firstName, String lastName){;
+        Customer customer = new Customer(firstName, lastName, username, encoder.encode(password));
         if(userDao.insertNewUser(customer)){
             return customer;
         }
@@ -65,6 +64,32 @@ public class UserService {
 
     public boolean transfer(String username, String fromName, String toName, double amount){
         return userDao.transfer(username, fromName, toName, amount);
+    }
+    
+    public void incrementMispelling(String username){
+    	userDao.incrementMispelling(username);
+    }
+    
+    public boolean listCustomers(){
+    	ArrayList<Customer> customers = userDao.getAllCustomers();
+    	if(customers.isEmpty()){
+    		return false;
+    	}
+    	for(Customer c: customers){
+    		System.out.println(c);
+    	}
+    	return true;
+    }
+    
+    public boolean listEmployees(){
+    	ArrayList<Employee> employees = userDao.getAllEmployees();
+    	if(employees.isEmpty()){
+    		return false;
+    	}
+    	for(Employee e: employees){
+    		System.out.println(e);
+    	}
+    	return true;
     }
 
 }

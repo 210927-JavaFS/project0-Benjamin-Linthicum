@@ -39,5 +39,17 @@ public class UserController {
     public boolean transfer(String username, String fromName, String toName, double amount){
         return userService.transfer(username, fromName, toName, amount);
     }
+    
+    public void incrementMispelling(String username){
+    	userService.incrementMispelling(username);
+    }
+    
+    public boolean listCustomers(){
+    	return userService.listCustomers();
+    }
+    
+    public boolean listEmployees(){
+    	return userService.listEmployees();
+    }
 
 }
