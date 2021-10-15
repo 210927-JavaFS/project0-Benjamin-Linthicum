@@ -4,10 +4,12 @@ import com.revature.daos.UserDao;
 import com.revature.daos.UserDaoImpl;
 import com.revature.models.*;
 import java.util.*;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 public class UserService {
 
     private UserDao userDao = new UserDaoImpl();
+    BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
     
     public User login(String username, String password){
         User user = findByUserName(username);
@@ -15,7 +17,7 @@ public class UserService {
             System.out.println("No such user found. Please check that you entered the username correctly.");
             return null;
         }
-        else if(!encryptPassword(password).equals(user.getEncryptedPassword())){
+        else if(encoder.matches(password, user.getEncryptedPassword())){
             System.out.println("Password incorrect.");
             return null;
         }
@@ -30,15 +32,12 @@ public class UserService {
     }
 
     public Customer createNewUser(String username, String password, String firstName, String lastName){
-        Customer customer = new Customer(firstName, lastName, username, encryptPassword(password));
+    	encoder.encode(password);
+        Customer customer = new Customer(firstName, lastName, username, password);
         if(userDao.insertNewUser(customer)){
             return customer;
         }
         return null;
-    }
-
-    public String encryptPassword(String password){
-        return "";
     }
 
     public User findByUserName(String username){
