@@ -46,6 +46,7 @@ public class MenuController {
         String response = "";
         boolean accountFound = false;
         boolean justTransfered = false; //True if deposit, withdraw or transfer were called. Intended to fix a printing error.
+        boolean accountApproved = true;
         while(true) {
         	if(!justTransfered) {
         		System.out.println("\nEnter \"apply\" to apply for a new account.");
@@ -113,14 +114,20 @@ public class MenuController {
                     System.out.println("\nWhat is the name of the account into which you would like to make a deposit?");
 
                     while(!accountFound){
+                    	accountApproved = true;
                         accountName = scan.nextLine();
                         for(Account a: currentUser.getAccounts()){
                             if(accountName.equals(a.getName())){
+                            	if(!a.getIsApproved()) {
+                            		System.out.println("Account not yet approved. Please select another account.");
+                            		accountApproved = false;
+                            		break;
+                            	}
                                 accountFound = true;
                                 break;
                             }
                         }
-                        if(!accountFound) {
+                        if(!accountFound && accountApproved) {
                         	System.out.println("\nNo such account with that name. Please try again.");
                         }
                     }
@@ -157,16 +164,22 @@ public class MenuController {
                     System.out.println("\nWhat is the name of the account from which you would like to withdraw?");
 
                     while(!accountFound){
+                    	accountApproved = true;
                         accountName = scan.nextLine();
                         for(Account a: currentUser.getAccounts()){
                             if(accountName.equals(a.getName())){
+                            	if(!a.getIsApproved()) {
+                            		System.out.println("Account not yet approved. Please select another account.");
+                            		accountApproved = false;
+                            		break;
+                            	}
                                 accountFound = true;
                                 withdrawAccountBalance = a.getBalance();
                                 System.out.println("Current balance: " + a.getBalance());
                                 break;
                             }
                         }
-                        if(!accountFound) {
+                        if(!accountFound && accountApproved) {
                         	System.out.println("\nNo such account with that name. Please try again.");
                         }
                     }
@@ -204,44 +217,59 @@ public class MenuController {
                         break;
                     }
                     String targetAccountName = ""; // The account to be transferred to
-                    System.out.println("\nEnter the name of the account to withdraw from in this transfer.");
                     userController.listAccounts(currentUser);
+                    System.out.println("\nEnter the name of the account to withdraw from in this transfer.");
 
                     while(!accountFound){
+                    	accountApproved = true;
                         accountName = scan.nextLine();
                         for(Account a: currentUser.getAccounts()){
                             if(accountName.equals(a.getName())){
+                            	if(!a.getIsApproved()) {
+                            		System.out.println("Account not yet approved. Please select another account.");
+                            		accountApproved = false;
+                            		break;
+                            	}
                                 withdrawAccountBalance = a.getBalance();
                                 accountFound = true;
                                 break;
                             }
                         }
-                        System.out.println("\nNo such account with that name. Please try again.");
+                        if(!accountFound && accountApproved) {
+                        	System.out.println("\nNo such account with that name. Please try again.");
+                        }
                     }
-                    System.out.println("Enter the name of the account to deposit to in this transfer.");
+                    System.out.println("\nEnter the name of the account to deposit to in this transfer.");
                     accountFound = false;
                     while(!accountFound){
+                    	accountApproved = true;
                         targetAccountName = scan.nextLine();
                         for(Account a: currentUser.getAccounts()){
                             if(targetAccountName.equals(a.getName())){
                                 if(targetAccountName.equals(accountName)){
-                                    System.out.println("They must be different accounts. Please enter a different account to transfer to.");
+                                    System.out.println("\nThey must be different accounts. Please enter a different account to transfer to.");
                                 }
-                                accountFound = true;
+                                else if(!a.getIsApproved()) {
+                            		System.out.println("Account not yet approved. Please select another account.");
+                            		accountApproved = false;
+                            	}
+                                else {
+                                	accountFound = true;
+                                }
                                 break;
                             }
                         }
-                        if(!targetAccountName.equals(accountName)){
+                        if(!targetAccountName.equals(accountName) && !accountFound && accountApproved){
                             System.out.println("\nNo such account with that name. Please try again.");
                         }
                     }
 
-                    System.out.println("How much would you like to transfer?");
+                    System.out.println("\nHow much would you like to transfer?");
                     while(true){
                         if(scan.hasNextDouble()){ // Potential bug, TEST THIS
                             amount = scan.nextDouble();
                             if(amount > withdrawAccountBalance){
-                                System.out.println("This amount exceeds the balance of your account. Please enter a lower number.");
+                                System.out.println("\nThis amount exceeds the balance of your account. Please enter a lower number.");
                                 continue;
                             }
                             if(amount >= 0.0){
@@ -253,9 +281,12 @@ public class MenuController {
 
                     if(userController.transfer(currentUser.getUserName(), accountName, targetAccountName, amount)){
                         currentUser.transferFunds(accountName, targetAccountName, amount);
-                        System.out.println("Transfer successful. New balances:");
+                        System.out.println("\nTransfer successful. New balances:");
                         System.out.println(currentUser.getAccount(accountName).getName() + ": " + currentUser.getAccount(accountName).getBalance());
                         System.out.println(currentUser.getAccount(targetAccountName).getName() + ": " + currentUser.getAccount(targetAccountName).getBalance());
+                    }
+                    else {
+                    	System.out.println("\nTransfer failed. An unexpected error occured.");
                     }
                     
                     justTransfered = true;

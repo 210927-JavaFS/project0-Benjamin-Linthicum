@@ -92,11 +92,11 @@ public class UserDaoImpl implements UserDao{
             statement.setString(1, username);
             ResultSet result = statement.executeQuery();
             while(result.next()){
-                accounts.add(new Account(result.getString("account_type"),
+                accounts.add(new Account(result.getString("user_name"),
                                          result.getString("account_name"),
                                          result.getDouble("balance"),
                                          result.getBoolean("isApproved"),
-                                         result.getString("user_name"))); 
+                                         result.getString("account_type"))); 
             }
 
             return accounts;
