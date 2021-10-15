@@ -6,10 +6,14 @@ import javax.lang.model.util.ElementScanner14;
 
 import java.util.Objects;
 import com.revature.models.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.slf4j.MDC;
 
 public class MenuController {
 
     private static Scanner scan = new Scanner(System.in);
+    private static Logger log = LoggerFactory.getLogger(MenuController.class);
     private static AccountController accountController = new AccountController();
     private static UserController userController = new UserController();
     private User currentUser;
@@ -483,6 +487,12 @@ public class MenuController {
         				System.out.println("An uexpected error occured.");
         			}
         			break;
+        			
+        		case "add note":
+        			/*if(!userController.addNote()) {
+        				System.out.println("An unexpected error occured.");
+        			} */
+        			break;
         		
         		case "logout":
         			return;
@@ -501,6 +511,7 @@ public class MenuController {
             String password = scan.nextLine();
             currentUser = userController.login(username, password);
             if (!Objects.isNull(currentUser)) {
+                log.info("User " + currentUser.getUserName() + " logged in.");
                 break;
             }
             System.out.println("\nLogin failed. Type \"1\" to try again, and anything else to return to the menu.");
@@ -531,6 +542,7 @@ public class MenuController {
                 continue;
             }
             System.out.println("Account creation successful!");
+            log.info("User " + currentUser.getUserName() + " registered a new account.");
             break;
         }
     }
