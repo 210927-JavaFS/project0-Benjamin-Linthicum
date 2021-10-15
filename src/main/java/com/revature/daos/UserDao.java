@@ -16,4 +16,5 @@ public interface UserDao {
     public ArrayList<Customer> getAllCustomers();
     public ArrayList<Employee> getAllEmployees();
     public ArrayList<Transgressions> getAllTransgressions();
+    public boolean addNote(String note, String username);
 }

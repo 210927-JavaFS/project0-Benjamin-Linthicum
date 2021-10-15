@@ -103,5 +103,9 @@ public class UserService {
     	}
     	return true;
     }
+    
+    public boolean addNote(String note, String username) {
+    	return userDao.addNote(note, username);
+    }
 
 }

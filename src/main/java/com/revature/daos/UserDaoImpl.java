@@ -272,5 +272,21 @@ public class UserDaoImpl implements UserDao{
         }
     	return transgressions;
     }
+    
+    @Override
+    public boolean addNote(String note, String username) {
+    	try(Connection conn = ConnectionUtil.getConnection()){
+            String sql = "UPDATE transgressions SET note = ? WHERE user_name = ?";
+            PreparedStatement statement = conn.prepareStatement(sql);
+            statement.setString(1,note);
+            statement.setString(2,username);
+            statement.execute();
+            return true;
+        }
+        catch(SQLException e){
+            e.printStackTrace();
+        }
+    	return false;
+    }
 
 }

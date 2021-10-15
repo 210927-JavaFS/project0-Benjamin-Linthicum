@@ -1,0 +1,1 @@
+09:42:52.696 [] [main] INFO  c.r.controllers.MenuController - User King logged in.

@@ -15,6 +15,14 @@ public class UserController {
     public boolean isUsernameAvailable(String username){
         return Objects.isNull(userService.findByUserName(username));
     }
+    
+    public User getUserByName(String username) {
+    	return userService.findByUserName(username);
+    }
+    
+    public boolean addNote(String note, String username) {
+    	return userService.addNote(note, username);
+    }
 
     public User createNewUser(String username, String password, String firstName, String lastName){
         return userService.createNewUser(username, password, firstName, lastName);

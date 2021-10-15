@@ -489,9 +489,28 @@ public class MenuController {
         			break;
         			
         		case "add note":
-        			/*if(!userController.addNote()) {
+        			System.out.println("Enter the username of the employee you would like to make a note on.");
+        			String employeeName = "";
+        			while(true) {
+        				employeeName = scan.nextLine();
+            			if(userController.isUsernameAvailable(employeeName)){
+            				break;
+            			}
+            			System.out.println("Employee not found. Re-enter username.");
+        			}
+        			System.out.println("What would you like your note to be? No more than 100 characters: ");
+        			String note = "";
+        			while(true) {
+        				note = scan.nextLine();
+            			if(note.length() >= 100){
+            				System.out.println("Note too long! try again.");
+            				continue;
+            			}
+            			break;
+        			}
+        			if(!userController.addNote(note, employeeName)) {
         				System.out.println("An unexpected error occured.");
-        			} */
+        			}
         			break;
         		
         		case "logout":
