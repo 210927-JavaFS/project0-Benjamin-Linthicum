@@ -19,4 +19,12 @@ public class AccountService{
 	public ArrayList<Account> getAllUnapprovedAccounts(){
 		return accountDao.getAllAccounts(true);
 	}
+	
+	public boolean approveAccount(Account account) {
+		return accountDao.approveAccount(account);
+	}
+	
+	public boolean denyAccount(Account account) {
+    	return accountDao.denyAccount(account);
+    }
 }

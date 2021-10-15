@@ -37,4 +37,40 @@ public class AccountDaoImpl implements AccountDao{
     	
     	return accounts;
     }
+    
+    public boolean approveAccount(Account account) {
+    	try(Connection conn = ConnectionUtil.getConnection()){
+    		String sql = "UPDATE account SET isApproved = true WHERE account_name = ? AND user_name = ?;";
+    		PreparedStatement statement = conn.prepareStatement(sql);
+    		int count = 0;
+    		
+    		statement.setString(++count, account.getName());
+    		statement.setString(++count, account.getUsername());
+    		return statement.execute();
+    		
+    	}
+    	catch(SQLException e) {
+    		e.printStackTrace();
+    	}
+    	
+    	return false;
+    }
+    
+    public boolean denyAccount(Account account) {
+    	try(Connection conn = ConnectionUtil.getConnection()){
+    		String sql = "DELETE FROM account WHERE account_name = ? AND user_name = ?;";
+    		PreparedStatement statement = conn.prepareStatement(sql);
+    		int count = 0;
+    		
+    		statement.setString(++count, account.getName());
+    		statement.setString(++count, account.getUsername());
+    		return statement.execute();
+    		
+    	}
+    	catch(SQLException e) {
+    		e.printStackTrace();
+    	}
+    	
+    	return false;
+    }
 }

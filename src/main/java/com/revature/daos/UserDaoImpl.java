@@ -68,9 +68,7 @@ public class UserDaoImpl implements UserDao{
                 statement.setString(++count, "Employee");
             else
                 statement.setString(++count, "Admin");
-            statement.execute();
-
-            return true;
+            return statement.execute();
         }
         catch (SQLException e){
             e.printStackTrace();
@@ -137,9 +135,7 @@ public class UserDaoImpl implements UserDao{
             statement.setDouble(++count, amount);
             statement.setString(++count, username);
             statement.setString(++count, accountName);
-            statement.execute();
-
-            return true;
+            return statement.execute();
         }
         catch(SQLException e){
             e.printStackTrace();
@@ -157,9 +153,7 @@ public class UserDaoImpl implements UserDao{
             statement.setDouble(++count, amount);
             statement.setString(++count, username);
             statement.setString(++count, accountName);
-            statement.execute();
-
-            return true;
+            return statement.execute();
         }
         catch(SQLException e){
             e.printStackTrace();

@@ -15,4 +15,12 @@ public class AccountController {
     public ArrayList<Account> getAllUnapprovedAccounts(){
     	return accountService.getAllUnapprovedAccounts();
     }
+    
+    public boolean approveAccount(Account account) {
+    	return accountService.approveAccount(account);
+    }
+    
+    public boolean denyAccount(Account account) {
+    	return accountService.denyAccount(account);
+    }
 }

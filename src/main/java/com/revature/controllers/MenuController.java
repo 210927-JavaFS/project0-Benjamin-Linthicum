@@ -304,11 +304,22 @@ public class MenuController {
         			while(true) {
         				response = scan.nextLine();
         				if(response.equals("approve")) {
-        					accountController.approveAccount(defendent);
+        					if(accountController.approveAccount(defendent)) {
+        						System.out.println("Account approved successfully.");
+        						defendent.approve();
+        					}
+        					else {
+        						System.out.println("An error occured while attempting to approve account.");
+        					}
         					break;
         				}
         				else if(response.equals("deny")) {
-        					accountController.denyAccount(defendent);
+        					if(accountController.denyAccount(defendent)) {
+        						System.out.println("Account denied successfully, I hope you're happy.");
+        					}
+        					else {
+        						System.out.println("An error occured while attempting to deny account.");
+        					}
         					break;
         				}
         				else {
