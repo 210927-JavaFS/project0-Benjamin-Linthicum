@@ -260,27 +260,30 @@ public class MenuController {
     }
 
     private void employeeMenu(){
-        System.out.println("Enter \"list accounts\" to list all accounts.");
-        System.out.println("Enter \"screen accounts\" to approve/deny pending accounts.");
-        System.out.println("Enter \"list users\" to list all users.");
-        System.out.println("Enter \"logout\" to logout.");
-        String response = "";
-        switch(response) {
-        	case "list accounts":
-        		break;
+    	while(true) {
+    		System.out.println("Enter \"list accounts\" to list all accounts.");
+    		System.out.println("Enter \"screen accounts\" to approve/deny pending accounts.");
+    		System.out.println("Enter \"list users\" to list all users.");
+    		System.out.println("Enter \"logout\" to logout.");
+    		String response = scan.nextLine();
+    		switch(response) {
+        		case "list accounts":
+        			accountController.listAllAccounts();
+        			break;
         		
-        	case "screen accounts":
-        		break;
+        		case "screen accounts":
+        			break;
         		
-        	case "list users":
-        		break;
+        		case "list users":
+        			break;
         		
-        	case "logout":
-        		return;
+        		case "logout":
+        			return;
         		
-        	default:
-        		System.out.println("Invalid input. As you spell your next entry, please consider that we are paying you.");
-        }
+        		default:
+        			System.out.println("Invalid input. As you spell your next entry, please consider that we are paying you.");
+    		}
+    	}
     }
 
     private void adminMenu(){

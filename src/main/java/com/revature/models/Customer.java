@@ -13,7 +13,7 @@ public class Customer extends User{
 
     @Override
     public void applyForAccount(String type, String name){
-        accounts.add(new Account(type, name));
+        accounts.add(new Account(type, name, this.getUserName()));
     }
 
     @Override

@@ -90,7 +90,8 @@ public class UserDaoImpl implements UserDao{
                 accounts.add(new Account(result.getString("account_type"),
                                          result.getString("account_name"),
                                          result.getDouble("balance"),
-                                         result.getBoolean("isApproved"))); 
+                                         result.getBoolean("isApproved"),
+                                         result.getString("user_name"))); 
             }
 
             return accounts;

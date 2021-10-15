@@ -5,17 +5,20 @@ public class Account {
     private String name;
     private double balance;
     private boolean isApproved;
+    private String username; //username of owner
 
-    public Account (String type, String name, double balance, boolean isApproved){
+    public Account (String type, String name, double balance, boolean isApproved, String username){
         this.type = type;
         this.name = name;
         this.balance = balance;
         this.isApproved = isApproved;
+        this.username = username;
     }
 
-    public Account (String type, String name){
+    public Account (String type, String name, String username){
         this.type = type;
         this.name = name;
+        this.username = username;
         this.balance = 0;
         this.isApproved = false;
     }
@@ -34,6 +37,10 @@ public class Account {
 
     public String getName(){
         return name;
+    }
+    
+    public String getUsername() {
+    	return username;
     }
 
     public void approve(){
@@ -62,7 +69,10 @@ public class Account {
 
     @Override
     public String toString(){
-        return "Name: " + name + ", Type: " + type + ", Balance: " + balance + (isApproved ? ", Approved" : ", Pending Approval");
+    	String result = "Name: " + name + ", Type: " + type + ", Balance: " + balance;
+    	result += (isApproved ? ", Approved" : ", Pending Approval");
+    	result += ", Owner: " + username;
+    	return result;
     }
 
 }
