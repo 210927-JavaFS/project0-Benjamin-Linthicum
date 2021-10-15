@@ -5,5 +5,5 @@ import java.util.*;
 
 public interface AccountDao {
     
-    public ArrayList<Account> getAllAccounts();
+    public ArrayList<Account> getAllAccounts(boolean unapprovedOnly);
 }

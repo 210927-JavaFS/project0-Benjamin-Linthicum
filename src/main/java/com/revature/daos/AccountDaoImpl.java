@@ -14,10 +14,13 @@ import com.revature.utils.ConnectionUtil;
 
 public class AccountDaoImpl implements AccountDao{
     
-    public ArrayList<Account> getAllAccounts(){
+    public ArrayList<Account> getAllAccounts(boolean unapprovedOnly){
     	ArrayList<Account> accounts = new ArrayList<Account>();
     	try(Connection conn = ConnectionUtil.getConnection()){
-    		String sql = "SELECT * FROM account";
+    		String sql = "SELECT * FROM account;";
+    		if(unapprovedOnly) {
+    			sql = "SELECT * FROM account WHERE account.isApproved = true;";
+    		}
     		PreparedStatement statement = conn.prepareStatement(sql);
     		ResultSet results = statement.executeQuery();
     		while(results.next()) {

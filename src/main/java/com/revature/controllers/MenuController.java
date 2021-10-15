@@ -1,6 +1,6 @@
 package com.revature.controllers;
 
-import java.util.Scanner;
+import java.util.*;
 
 import javax.lang.model.util.ElementScanner14;
 
@@ -272,6 +272,49 @@ public class MenuController {
         			break;
         		
         		case "screen accounts":
+        			ArrayList<Account> accounts = accountController.getAllUnapprovedAccounts();
+        			if(accounts.isEmpty()) {
+        				System.out.println("There are no pending accounts.");
+        				break;
+        			}
+        			for(Account a: accounts) {
+        				System.out.println(a);
+        			}
+        			String username = "";
+        			String accountName = "";
+        			boolean notFound = true;
+        			Account defendent = null;
+        			while(notFound) {
+        				System.out.println("Enter the username of the owner of the account to judge:");
+            			username = scan.nextLine();
+            			System.out.println("Enter the name of the account to judge:");
+            			accountName = scan.nextLine();
+        				for(Account a: accounts) {
+        					if(username.equals(a.getUsername()) && accountName.equals(a.getName())){
+        						defendent = a;
+        						notFound = false;
+        						break;
+        					}
+        				}
+        				if(notFound) {
+        					System.out.println("No such user has a pending account. Please enter a valid username.");
+        				}
+        			}
+        			System.out.println("Enter \"approve\" or \"deny\":");
+        			while(true) {
+        				response = scan.nextLine();
+        				if(response.equals("approve")) {
+        					accountController.approveAccount(defendent);
+        					break;
+        				}
+        				else if(response.equals("deny")) {
+        					accountController.denyAccount(defendent);
+        					break;
+        				}
+        				else {
+        					System.out.println("Please enter a valid response.");
+        				}
+        			}
         			break;
         		
         		case "list users":
